@@ -1,0 +1,78 @@
+groups:
+  - name: Development Tools
+    bookmarks:
+      - name: GitHub
+        url: https://github.com
+        description: Code repository and collaboration platform
+        shortcode: gh
+
+      - name: Stack Overflow
+        url: https://stackoverflow.com
+        description: Programming Q&A community
+        shortcode: so
+
+      - name: Go Documentation
+        url: https://golang.org/doc
+        description: Official Go programming language documentation
+        shortcode: godoc
+
+      - name: Docker Hub
+        url: https://hub.docker.com
+        description: Container image registry
+        shortcode: docker
+
+  - name: Internal Resources
+    bookmarks:
+      - name: Company Wiki
+        url: https://wiki.company.internal
+        description: Internal documentation and knowledge base
+        shortcode: wiki
+
+      - name: HR Portal
+        url: https://hr.company.internal
+        description: Human resources and benefits
+        shortcode: hr
+
+      - name: IT Support
+        url: https://support.company.internal
+        description: Submit and track IT tickets
+        shortcode: it
+
+  - name: Productivity
+    bookmarks:
+      - name: Gmail
+        url: https://mail.google.com
+        description: Email client
+        shortcode: mail
+
+      - name: Google Calendar
+        url: https://calendar.google.com
+        description: Schedule and meetings
+        shortcode: cal
+
+      - name: Google Drive
+        url: https://drive.google.com
+        description: Cloud storage and documents
+        shortcode: drive
+
+      - name: Slack
+        url: https://slack.com
+        description: Team communication
+        shortcode: slack
+
+  - name: Learning & Reference
+    bookmarks:
+      - name: MDN Web Docs
+        url: https://developer.mozilla.org
+        description: Web development reference and guides
+        shortcode: mdn
+
+      - name: AWS Documentation
+        url: https://docs.aws.amazon.com
+        description: Amazon Web Services documentation
+        shortcode: aws
+
+      - name: Kubernetes Docs
+        url: https://kubernetes.io/docs
+        description: Container orchestration documentation
+        shortcode: k8s
