@@ -10,8 +10,9 @@ A simple, minimal, single-page bookmark manager written in Go. Perfect for inter
 - **Live Search**: Filter bookmarks with fuzzy matching
 - **Minimal Dependencies**: Uses only `gopkg.in/yaml.v3` outside the standard library
 - **Clean UI**: Attractive, responsive single-page interface
+- **Standalone Binary**: Frontend files embedded using Go embed - no external files needed
 - **Docker Ready**: Easy containerized deployment
-- **Lightweight**: Small binary, minimal resource usage
+- **Lightweight**: Single ~9MB binary, minimal resource usage
 
 ## Project Structure
 
@@ -20,11 +21,13 @@ A simple, minimal, single-page bookmark manager written in Go. Perfect for inter
 ├── main.go              # Go application (API, routing, YAML parsing)
 ├── bookmarks.yaml       # Bookmark configuration
 ├── static/
-│   └── index.html      # Frontend (HTML/CSS/JS in a single file)
+│   └── index.html      # Frontend (HTML/CSS/JS) - embedded in binary at build time
 ├── Dockerfile           # Docker build configuration
 ├── go.mod              # Go dependencies
 └── README.md           # Documentation
 ```
+
+The binary is **standalone** - the `static/` directory is embedded at compile time using Go's `embed` package, so you only need the binary and your `bookmarks.yaml` file to run.
 
 ## Quick Start
 
@@ -126,8 +129,6 @@ http://localhost:8080/api/bookmarks
 ```
 -config string
     Path to bookmarks YAML file (default "bookmarks.yaml")
--static string
-    Path to static files directory (default "static")
 -port string
     Port to serve on (default "8080")
 ```
@@ -170,7 +171,15 @@ The Docker image uses multi-stage builds for minimal size:
 
 ### Changing the UI
 
-The HTML/CSS/JS is located in `static/index.html`. Edit this file to customize the appearance and functionality.
+The HTML/CSS/JS is located in `static/index.html`. Edit this file to customize the appearance and functionality, then rebuild the binary:
+
+```bash
+# Edit static/index.html
+# Then rebuild
+go build -o bookmarks
+```
+
+The static files are embedded at compile time, so any changes require a rebuild.
 
 ### Adding Features
 

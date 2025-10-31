@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -11,6 +12,9 @@ import (
 
 	"gopkg.in/yaml.v3"
 )
+
+//go:embed static/*
+var staticFiles embed.FS
 
 // Bookmark represents a single bookmark entry
 type Bookmark struct {
@@ -35,7 +39,6 @@ var (
 	config        Config
 	shortcodeMap  map[string]string
 	configFile    = flag.String("config", "bookmarks.yaml", "Path to bookmarks YAML file")
-	staticDir     = flag.String("static", "static", "Path to static files directory")
 	port          = flag.String("port", "8080", "Port to serve on")
 )
 
@@ -102,8 +105,7 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	indexPath := *staticDir + "/index.html"
-	data, err := os.ReadFile(indexPath)
+	data, err := staticFiles.ReadFile("static/index.html")
 	if err != nil {
 		http.Error(w, "Failed to load page", http.StatusInternalServerError)
 		log.Printf("Error reading index.html: %v", err)
