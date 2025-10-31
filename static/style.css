@@ -13,33 +13,33 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     background: white;
-    padding: 30px;
+    padding: 24px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 26px;
+    margin-bottom: 8px;
     color: #2c3e50;
 }
 
 .subtitle {
     color: #7f8c8d;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-size: 14px;
 }
 
 .search-box {
     width: 100%;
-    padding: 12px 16px;
-    font-size: 16px;
+    padding: 10px 14px;
+    font-size: 15px;
     border: 2px solid #e0e0e0;
     border-radius: 6px;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
     transition: border-color 0.2s;
 }
 
@@ -49,28 +49,28 @@ h1 {
 }
 
 .group {
-    margin-bottom: 35px;
+    margin-bottom: 28px;
 }
 
 .group-name {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: #2c3e50;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
     border-bottom: 2px solid #3498db;
 }
 
 .bookmarks {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
 }
 
 .bookmark {
-    padding: 15px;
+    padding: 11px;
     border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    border-radius: 5px;
     transition: all 0.2s;
     background: #fafafa;
 }
@@ -82,9 +82,9 @@ h1 {
 }
 
 .bookmark-name {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }
 
 .bookmark-name a {
@@ -97,16 +97,18 @@ h1 {
 }
 
 .bookmark-url {
-    font-size: 12px;
+    font-size: 11px;
     color: #7f8c8d;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     word-break: break-all;
+    line-height: 1.4;
 }
 
 .bookmark-description {
-    font-size: 14px;
+    font-size: 13px;
     color: #555;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    line-height: 1.4;
 }
 
 .bookmark-shortcode {
