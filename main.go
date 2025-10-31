@@ -113,7 +113,11 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Set security headers
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Set("X-Frame-Options", "DENY")
+
 	if _, err := w.Write(data); err != nil {
 		log.Printf("Error writing response: %v", err)
 	}
@@ -129,10 +133,23 @@ func handleAPIBookmarks(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleShortcode redirects shortcodes to their target URLs
+// Note: URLs are admin-controlled via bookmarks.yaml, not user input
 func handleShortcode(w http.ResponseWriter, r *http.Request) {
 	code := strings.TrimPrefix(r.URL.Path, "/s/")
 
+	// Basic validation: shortcode should be alphanumeric
+	if len(code) == 0 || len(code) > 50 {
+		http.NotFound(w, r)
+		return
+	}
+
 	if url, ok := shortcodeMap[code]; ok {
+		// Validate URL scheme to prevent javascript: or data: URIs
+		if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+			http.Error(w, "Invalid URL scheme", http.StatusBadRequest)
+			log.Printf("Blocked redirect to non-http(s) URL: %s", url)
+			return
+		}
 		http.Redirect(w, r, url, http.StatusFound)
 		return
 	}
@@ -145,6 +162,19 @@ func handleStatic(w http.ResponseWriter, r *http.Request) {
 	// Remove leading slash to get path within embedded FS
 	path := strings.TrimPrefix(r.URL.Path, "/")
 
+	// Security: ensure path is within static/ directory only
+	// This prevents path traversal attempts like /static/../main.go
+	if !strings.HasPrefix(path, "static/") {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Additional check: no directory traversal sequences
+	if strings.Contains(path, "..") {
+		http.NotFound(w, r)
+		return
+	}
+
 	data, err := staticFiles.ReadFile(path)
 	if err != nil {
 		http.NotFound(w, r)
@@ -155,6 +185,9 @@ func handleStatic(w http.ResponseWriter, r *http.Request) {
 	if strings.HasSuffix(path, ".css") {
 		w.Header().Set("Content-Type", "text/css")
 	}
+
+	// Security headers
+	w.Header().Set("X-Content-Type-Options", "nosniff")
 
 	if _, err := w.Write(data); err != nil {
 		log.Printf("Error writing static file: %v", err)
