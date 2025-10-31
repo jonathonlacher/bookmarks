@@ -114,7 +114,9 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Write(data)
+	if _, err := w.Write(data); err != nil {
+		log.Printf("Error writing response: %v", err)
+	}
 }
 
 // handleAPIBookmarks serves bookmark data as JSON
@@ -154,5 +156,7 @@ func handleStatic(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/css")
 	}
 
-	w.Write(data)
+	if _, err := w.Write(data); err != nil {
+		log.Printf("Error writing static file: %v", err)
+	}
 }
