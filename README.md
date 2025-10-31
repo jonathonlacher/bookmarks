@@ -1,218 +1,66 @@
 # Bookmarks
 
-A simple, minimal, single-page bookmark manager written in Go. Perfect for internal company use with easy Docker deployment.
-
-## Features
-
-- **Simple YAML Configuration**: Define bookmarks in a clear YAML structure
-- **Organized Groups**: Categorize bookmarks into logical groups
-- **URL Shortcodes**: Create short URLs for quick access (e.g., `/s/gh` → GitHub)
-- **Live Search**: Filter bookmarks with fuzzy matching
-- **Minimal Dependencies**: Uses only `gopkg.in/yaml.v3` outside the standard library
-- **Clean UI**: Attractive, responsive single-page interface
-- **Standalone Binary**: Frontend files embedded using Go embed - no external files needed
-- **Docker Ready**: Easy containerized deployment
-- **Lightweight**: Single ~9MB binary, minimal resource usage
-
-## Project Structure
-
-```
-.
-├── main.go              # Go application (API, routing, YAML parsing)
-├── bookmarks.yaml       # Bookmark configuration
-├── static/
-│   └── index.html      # Frontend (HTML/CSS/JS) - embedded in binary at build time
-├── Dockerfile           # Docker build configuration
-├── go.mod              # Go dependencies
-└── README.md           # Documentation
-```
-
-The binary is **standalone** - the `static/` directory is embedded at compile time using Go's `embed` package, so you only need the binary and your `bookmarks.yaml` file to run.
+A simple bookmark manager in Go. Just a single-page app that reads from a YAML file.
 
 ## Quick Start
 
-### Running Locally
-
 ```bash
-# Build and run
-go build -o bookmarks
+go build
 ./bookmarks
-
-# Custom config and port
-./bookmarks -config my-bookmarks.yaml -port 3000
 ```
 
-Visit `http://localhost:8080` in your browser.
+Open `http://localhost:8080`
 
-### Docker Deployment
+## Setup
 
-```bash
-# Build the Docker image
-docker build -t bookmarks .
-
-# Run with default bookmarks.yaml
-docker run -p 8080:8080 bookmarks
-
-# Run with custom bookmarks file
-docker run -p 8080:8080 -v $(pwd)/my-bookmarks.yaml:/app/bookmarks.yaml bookmarks
-
-# Run with custom port
-docker run -p 3000:3000 bookmarks ./bookmarks -port 3000
-```
-
-## Configuration
-
-Create a `bookmarks.yaml` file with your bookmarks:
+Edit `bookmarks.yaml`:
 
 ```yaml
 groups:
-  - name: Development Tools
+  - name: Dev Tools
     bookmarks:
       - name: GitHub
         url: https://github.com
-        description: Code repository and collaboration platform
+        description: Code stuff
         shortcode: gh
-
-      - name: Stack Overflow
-        url: https://stackoverflow.com
-        description: Programming Q&A community
-        shortcode: so
-
-  - name: Internal Resources
-    bookmarks:
-      - name: Company Wiki
-        url: https://wiki.company.internal
-        description: Internal documentation
-        shortcode: wiki
 ```
 
-### YAML Structure
+## What it does
 
-- **groups**: Array of bookmark groups
-  - **name**: Group display name
-  - **bookmarks**: Array of bookmarks in this group
-    - **name**: Bookmark display name (required)
-    - **url**: Target URL (required)
-    - **description**: Brief description (optional)
-    - **shortcode**: Short URL code (optional)
+- Displays bookmarks in groups
+- Search box to filter them
+- URL shortcodes: `http://localhost:8080/s/gh` → redirects to GitHub
+- That's it
 
-## Usage
-
-### Main Page
-
-Access the main bookmark page at `http://localhost:8080/`
-
-Features:
-- All bookmarks displayed in organized groups
-- Search bar for filtering bookmarks
-- Click any bookmark to visit the URL
-- Hover effects for better interaction
-
-### URL Shortcodes
-
-If a bookmark has a shortcode, you can access it via:
-```
-http://localhost:8080/s/<shortcode>
-```
-
-Example: `http://localhost:8080/s/gh` redirects to GitHub
-
-### API Endpoint
-
-Get all bookmarks as JSON:
-```
-http://localhost:8080/api/bookmarks
-```
-
-## Command Line Options
-
-```
--config string
-    Path to bookmarks YAML file (default "bookmarks.yaml")
--port string
-    Port to serve on (default "8080")
-```
-
-## Building from Source
+## Docker
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd bookmarks
-
-# Download dependencies
-go mod download
-
-# Build
-go build -o bookmarks
-
-# Run
-./bookmarks
-```
-
-## Security Considerations
-
-- **Minimal Dependencies**: Only uses `gopkg.in/yaml.v3` for YAML parsing
-- **No External Resources**: All HTML/CSS/JS is embedded in the binary
-- **Read-Only**: Application only reads the config file, no write operations
-- **Standard Library**: Maximizes use of Go standard library for security
-- **No Database**: No database dependencies or connections
-- **Stateless**: No session management or authentication complexity
-
-## Docker Image Details
-
-The Docker image uses multi-stage builds for minimal size:
-- **Build Stage**: Uses `golang:1.21-alpine` to compile the application
-- **Final Stage**: Uses `alpine:latest` with only the compiled binary
-- **Size**: Final image is approximately 10-15 MB
-- **Security**: Includes CA certificates for HTTPS support
-
-## Customization
-
-### Changing the UI
-
-The HTML/CSS/JS is located in `static/index.html`. Edit this file to customize the appearance and functionality, then rebuild the binary:
-
-```bash
-# Edit static/index.html
-# Then rebuild
-go build -o bookmarks
-```
-
-The static files are embedded at compile time, so any changes require a rebuild.
-
-### Adding Features
-
-The code is intentionally simple and easy to modify. Some ideas:
-- Add categories/tags
-- Export bookmarks
-- Import from browser bookmarks
-- Add bookmark icons/favicons
-- User authentication
-
-## Troubleshooting
-
-**Port already in use:**
-```bash
-./bookmarks -port 3000
-```
-
-**Config file not found:**
-```bash
-./bookmarks -config /path/to/bookmarks.yaml
-```
-
-**Docker build fails:**
-Ensure you have `go.mod` and `go.sum` files:
-```bash
-go mod tidy
 docker build -t bookmarks .
+docker run -p 8080:8080 bookmarks
 ```
 
-## License
+Mount your own bookmarks file:
+```bash
+docker run -p 8080:8080 -v $(pwd)/my-bookmarks.yaml:/app/bookmarks.yaml bookmarks
+```
 
-This is internal company software. Adjust licensing as needed.
+## Flags
 
-## Contributing
+```
+-config string    bookmarks file (default "bookmarks.yaml")
+-port string      port (default "8080")
+```
 
-Keep it simple! The goal is clarity and maintainability over cleverness.
+## How it works
+
+- `main.go` - HTTP server, YAML parser
+- `static/` - HTML/CSS/JS (embedded in binary at build time)
+- `bookmarks.yaml` - Your bookmarks
+
+Binary is standalone (~9MB). Just needs the YAML file to run.
+
+## Notes
+
+Only dependency is `gopkg.in/yaml.v3`. Everything else is standard library.
+
+The code is intentionally simple. It's meant to be easy to read and modify.
