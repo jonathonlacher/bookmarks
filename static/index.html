@@ -63,56 +63,77 @@
                 groupTitle.textContent = group.name;
                 groupDiv.appendChild(groupTitle);
 
-                const bookmarksDiv = document.createElement('div');
-                bookmarksDiv.className = 'bookmarks';
+                const table = document.createElement('table');
+                table.className = 'bookmarks-table';
+
+                const thead = document.createElement('thead');
+                thead.innerHTML = `
+                    <tr>
+                        <th>Name</th>
+                        <th>URL</th>
+                        <th>Description</th>
+                        <th>Shortcode</th>
+                    </tr>
+                `;
+                table.appendChild(thead);
+
+                const tbody = document.createElement('tbody');
 
                 group.bookmarks.forEach(bookmark => {
                     hasVisibleBookmarks = true;
-                    const bookmarkDiv = createBookmarkElement(bookmark);
-                    bookmarksDiv.appendChild(bookmarkDiv);
+                    const row = createBookmarkRow(bookmark);
+                    tbody.appendChild(row);
                 });
 
-                groupDiv.appendChild(bookmarksDiv);
+                table.appendChild(tbody);
+                groupDiv.appendChild(table);
                 container.appendChild(groupDiv);
             });
 
             noResults.classList.toggle('hidden', hasVisibleBookmarks);
         }
 
-        // Create bookmark HTML element
-        function createBookmarkElement(bookmark) {
-            const div = document.createElement('div');
-            div.className = 'bookmark';
+        // Create bookmark table row
+        function createBookmarkRow(bookmark) {
+            const tr = document.createElement('tr');
 
-            const name = document.createElement('div');
-            name.className = 'bookmark-name';
+            // Name column
+            const tdName = document.createElement('td');
+            tdName.className = 'col-name';
             const link = document.createElement('a');
             link.href = bookmark.url;
             link.textContent = bookmark.name;
             link.target = '_blank';
-            name.appendChild(link);
-            div.appendChild(name);
+            link.className = 'bookmark-link';
+            tdName.appendChild(link);
+            tr.appendChild(tdName);
 
-            const url = document.createElement('div');
-            url.className = 'bookmark-url';
-            url.textContent = bookmark.url;
-            div.appendChild(url);
+            // URL column
+            const tdUrl = document.createElement('td');
+            tdUrl.className = 'col-url';
+            tdUrl.textContent = bookmark.url;
+            tr.appendChild(tdUrl);
 
-            if (bookmark.description) {
-                const desc = document.createElement('div');
-                desc.className = 'bookmark-description';
-                desc.textContent = bookmark.description;
-                div.appendChild(desc);
-            }
+            // Description column
+            const tdDesc = document.createElement('td');
+            tdDesc.className = 'col-description';
+            tdDesc.textContent = bookmark.description || '—';
+            tr.appendChild(tdDesc);
 
+            // Shortcode column
+            const tdShortcode = document.createElement('td');
+            tdShortcode.className = 'col-shortcode';
             if (bookmark.shortcode) {
-                const shortcode = document.createElement('div');
-                shortcode.className = 'bookmark-shortcode';
-                shortcode.textContent = '/s/' + bookmark.shortcode;
-                div.appendChild(shortcode);
+                const span = document.createElement('span');
+                span.className = 'bookmark-shortcode';
+                span.textContent = '/s/' + bookmark.shortcode;
+                tdShortcode.appendChild(span);
+            } else {
+                tdShortcode.textContent = '—';
             }
+            tr.appendChild(tdShortcode);
 
-            return div;
+            return tr;
         }
 
         // Simple fuzzy search implementation

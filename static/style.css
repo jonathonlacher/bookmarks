@@ -49,76 +49,100 @@ h1 {
 }
 
 .group {
-    margin-bottom: 28px;
+    margin-bottom: 32px;
 }
 
 .group-name {
     font-size: 18px;
     font-weight: 600;
     color: #2c3e50;
-    margin-bottom: 12px;
-    padding-bottom: 6px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
     border-bottom: 2px solid #3498db;
 }
 
-.bookmarks {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 10px;
+.bookmarks-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: white;
 }
 
-.bookmark {
-    padding: 11px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    transition: all 0.2s;
-    background: #fafafa;
+.bookmarks-table thead {
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
 }
 
-.bookmark:hover {
-    border-color: #3498db;
-    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.15);
-    transform: translateY(-2px);
-}
-
-.bookmark-name {
-    font-size: 15px;
+.bookmarks-table th {
+    padding: 10px 12px;
+    text-align: left;
     font-weight: 600;
-    margin-bottom: 5px;
+    color: #495057;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.bookmark-name a {
+.bookmarks-table tbody tr {
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.15s ease;
+}
+
+.bookmarks-table tbody tr:hover {
+    background-color: #f8f9ff;
+}
+
+.bookmarks-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.bookmarks-table td {
+    padding: 10px 12px;
+    vertical-align: top;
+}
+
+.bookmarks-table td.col-name {
+    font-weight: 500;
+    width: 25%;
+}
+
+.bookmarks-table td.col-url {
+    width: 30%;
+    word-break: break-all;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.bookmarks-table td.col-description {
+    width: 35%;
+    color: #495057;
+}
+
+.bookmarks-table td.col-shortcode {
+    width: 10%;
+    text-align: right;
+}
+
+.bookmark-link {
     color: #3498db;
     text-decoration: none;
+    font-weight: 500;
 }
 
-.bookmark-name a:hover {
+.bookmark-link:hover {
     text-decoration: underline;
-}
-
-.bookmark-url {
-    font-size: 11px;
-    color: #7f8c8d;
-    margin-bottom: 6px;
-    word-break: break-all;
-    line-height: 1.4;
-}
-
-.bookmark-description {
-    font-size: 13px;
-    color: #555;
-    margin-bottom: 6px;
-    line-height: 1.4;
+    color: #2980b9;
 }
 
 .bookmark-shortcode {
     display: inline-block;
     font-size: 11px;
-    background: #ecf0f1;
+    background: #e7f3ff;
     color: #2c3e50;
-    padding: 3px 8px;
+    padding: 4px 8px;
     border-radius: 3px;
     font-family: 'Courier New', monospace;
+    white-space: nowrap;
 }
 
 .no-results {
