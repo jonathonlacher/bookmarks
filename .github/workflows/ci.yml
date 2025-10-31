@@ -23,6 +23,9 @@ jobs:
     - name: Download dependencies
       run: go mod download
 
+    - name: Run tests
+      run: go test -v -cover
+
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v4
       with:
@@ -30,8 +33,3 @@ jobs:
 
     - name: Build
       run: go build -v -o bookmarks .
-
-    - name: Test build artifact
-      run: |
-        ls -lh bookmarks
-        file bookmarks
