@@ -13,6 +13,19 @@ A simple, minimal, single-page bookmark manager written in Go. Perfect for inter
 - **Docker Ready**: Easy containerized deployment
 - **Lightweight**: Small binary, minimal resource usage
 
+## Project Structure
+
+```
+.
+├── main.go              # Go application (API, routing, YAML parsing)
+├── bookmarks.yaml       # Bookmark configuration
+├── static/
+│   └── index.html      # Frontend (HTML/CSS/JS in a single file)
+├── Dockerfile           # Docker build configuration
+├── go.mod              # Go dependencies
+└── README.md           # Documentation
+```
+
 ## Quick Start
 
 ### Running Locally
@@ -113,6 +126,8 @@ http://localhost:8080/api/bookmarks
 ```
 -config string
     Path to bookmarks YAML file (default "bookmarks.yaml")
+-static string
+    Path to static files directory (default "static")
 -port string
     Port to serve on (default "8080")
 ```
@@ -155,7 +170,7 @@ The Docker image uses multi-stage builds for minimal size:
 
 ### Changing the UI
 
-The HTML/CSS is embedded in `main.go` as the `htmlPage` constant. Edit this constant to customize the appearance.
+The HTML/CSS/JS is located in `static/index.html`. Edit this file to customize the appearance and functionality.
 
 ### Adding Features
 

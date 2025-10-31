@@ -28,6 +28,9 @@ COPY --from=builder /build/bookmarks .
 # Copy default bookmarks file (can be overridden with volume mount)
 COPY bookmarks.yaml .
 
+# Copy static files
+COPY static ./static
+
 # Expose port
 EXPOSE 8080
 
