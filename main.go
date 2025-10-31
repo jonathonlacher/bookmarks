@@ -56,6 +56,7 @@ func main() {
 	http.HandleFunc("/", handleHome)
 	http.HandleFunc("/api/bookmarks", handleAPIBookmarks)
 	http.HandleFunc("/s/", handleShortcode)
+	http.HandleFunc("/static/", handleStatic)
 
 	// Start server
 	addr := ":" + *port
@@ -135,4 +136,23 @@ func handleShortcode(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.NotFound(w, r)
+}
+
+// handleStatic serves static files (CSS, etc.) from embedded filesystem
+func handleStatic(w http.ResponseWriter, r *http.Request) {
+	// Remove leading slash to get path within embedded FS
+	path := strings.TrimPrefix(r.URL.Path, "/")
+
+	data, err := staticFiles.ReadFile(path)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Set content type based on file extension
+	if strings.HasSuffix(path, ".css") {
+		w.Header().Set("Content-Type", "text/css")
+	}
+
+	w.Write(data)
 }
